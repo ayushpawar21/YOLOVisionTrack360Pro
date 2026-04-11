@@ -48,3 +48,12 @@ yolov3*.weights
 # OS
 .DS_Store
 Thumbs.db
+
+# YOLO/Model files
+*.pt
+*.cfg
+*.names
+yolov8*.pt
+coco.names
+yolov3-tiny.cfg
+yolov3-tiny.weights
