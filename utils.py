@@ -334,6 +334,41 @@ class FrameAnnotator:
 
 
 
+
+    @staticmethod
+    def add_bottom_console(frame, model_name, conf_threshold, tracked_count, frame_count, fps):
+        """Add terminal-style console output at bottom of frame."""
+        height, width = frame.shape[:2]
+        
+        # Console panel height
+        console_height = 100
+        panel_y = height - console_height
+        
+        # Dark background for console
+        cv2.rectangle(frame, (0, panel_y), (width, height), (0, 0, 0), -1)
+        
+        # Cyan border (terminal style)
+        cv2.rectangle(frame, (0, panel_y), (width, height), (0, 255, 255), 3)
+        cv2.line(frame, (0, panel_y + 25), (width, panel_y + 25), (0, 255, 255), 2)
+        
+        # Header
+        header = "$ YOLOv8 TRACKING CONSOLE"
+        cv2.putText(frame, header, (10, panel_y + 20), cv2.FONT_HERSHEY_MONOSPACE, 
+                   0.6, (0, 255, 255), 2)
+        
+        # First line: Model and Config
+        line1 = f"[Model: {model_name}] [Confidence: {conf_threshold}] [Tracked: {tracked_count}]"
+        cv2.putText(frame, line1, (10, panel_y + 50), cv2.FONT_HERSHEY_MONOSPACE,
+                   0.5, (0, 255, 0), 1)
+        
+        # Second line: Frame info
+        line2 = f"[Frame: {frame_count}] [FPS: {fps}] [Status: Processing...]"
+        cv2.putText(frame, line2, (10, panel_y + 70), cv2.FONT_HERSHEY_MONOSPACE,
+                   0.5, (255, 255, 0), 1)
+        
+        return frame
+
+
 def validate_video_file(video_path):
     """
     Validate if video file exists and is readable.
