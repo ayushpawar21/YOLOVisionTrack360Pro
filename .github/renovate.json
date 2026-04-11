@@ -1,0 +1,28 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "timezone": "UTC",
+  "assignees": [],
+  "labels": ["dependencies", "renovate"],
+  "ignorePaths": [
+    "videos/**",
+    "output/**",
+    "venv/**"
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": ["pypi"],
+      "matchPackagePatterns": [".*"],
+      "automerge": false,
+      "groupName": "python dependencies"
+    },
+    {
+      "matchPackageNames": ["torch", "torchvision", "ultralytics"],
+      "automerge": false,
+      "groupName": "ml dependencies"
+    }
+  ],
+  "prHourlyLimit": 2,
+  "prConcurrentLimit": 5
+}
