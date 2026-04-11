@@ -39,6 +39,13 @@ from tqdm import tqdm
 from tracker import VideoTracker, MODEL_NAME, CONFIDENCE_THRESHOLD
 from utils import VideoReader, VideoWriter, FrameAnnotator, get_video_files, create_output_filename
 
+# RECENT CHANGES:
+# - Added console output overlay showing model, FPS, object count, frame info
+# - Console info displays at bottom of video frames for YouTube viewers
+# - Shows real-time processing information: Model: yolov8n | Objects: 5 | Frame: 42 | FPS: 30
+# - Interactive menus for video selection (A for all, or specific indices 0,1,2...)
+# - Interactive model selection (1-5 for different YOLOv8 sizes, D for default)
+
 
 class VideoProcessor:
     """Main processor for batch video tracking with YOLOv8."""

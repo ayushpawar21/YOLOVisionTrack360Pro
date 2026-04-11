@@ -31,6 +31,15 @@ import numpy as np
 from pathlib import Path
 
 
+
+# RECENT CHANGES:
+# - Added add_console_header(): Shows "python main.py" command at top of video
+# - Added add_console_info(): Displays model, FPS, objects tracked, frame count at bottom
+# - Added add_instruction_overlay(): Shows how-to guide for YouTube viewers
+#   Types: "start" - setup instructions, "model" - model selection, "video" - video selection
+# - Console overlays use cyan (0, 255, 255) color for terminal aesthetic
+# - Semi-transparent backgrounds for readability over video content
+
 class VideoReader:
     """Read video files with frame-by-frame access."""
 
@@ -218,6 +227,111 @@ class FrameAnnotator:
         seconds = frame_count / fps
         timestamp = f"Frame: {frame_count} | Time: {seconds:.2f}s"
         return FrameAnnotator.add_info_text(frame, timestamp, position=(10, 30))
+
+
+    @staticmethod
+    def add_console_header(frame, height):
+        """Add console-style header with command info."""
+        header_text = "python main.py"
+        cv2.putText(frame, header_text, (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 
+                   0.8, (0, 255, 255), 2)
+        
+        # Add separator line
+        cv2.line(frame, (10, 60), (frame.shape[1] - 10, 60), (0, 255, 255), 1)
+        
+        return frame
+
+    @staticmethod
+    def add_console_info(frame, frame_count, fps, tracked_count, model_name):
+        """Add console-style information overlay."""
+        height = frame.shape[0]
+        
+        # Bottom info panel (dark background)
+        cv2.rectangle(frame, (0, height - 90), (frame.shape[1], height), (0, 0, 0), -1)
+        cv2.rectangle(frame, (0, height - 90), (frame.shape[1], height), (0, 255, 255), 2)
+        
+        # Console text
+        y_offset = height - 70
+        info_lines = [
+            f"Model: {model_name} | Objects Tracked: {tracked_count}",
+            f"Frame: {frame_count} | FPS: {fps}",
+            "Output: tracked_video.mp4 | Status: Processing..."
+        ]
+        
+        for i, line in enumerate(info_lines):
+            cv2.putText(frame, line, (15, y_offset + (i * 20)), 
+                       cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 1)
+        
+        return frame
+
+    @staticmethod
+    def add_instruction_overlay(frame, instruction_type="start"):
+        """Add instruction overlays for YouTube viewers."""
+        overlay = frame.copy()
+        height, width = frame.shape[:2]
+        
+        instructions = {
+            "start": [
+                "VIDEO OBJECT TRACKING WITH YOLOv8",
+                "",
+                "How to Generate This Video:",
+                "1. Clone: git clone <repo>",
+                "2. Install: pip install -r requirements.txt",
+                "3. Add videos to: videos/ folder",
+                "4. Run: python main.py",
+                "5. Select model (1-5 or D)",
+                "6. Choose videos (A for all)",
+                "7. Output saved to: output/",
+            ],
+            "model": [
+                "MODEL SELECTION",
+                "",
+                "[1] yolov8n - Fastest (30-60 FPS)",
+                "[2] yolov8s - Balanced (20-40 FPS)",
+                "[3] yolov8m - Better (15-30 FPS)",
+                "[4] yolov8l - High (10-20 FPS)",
+                "[5] yolov8x - Best (5-15 FPS)",
+            ],
+            "video": [
+                "VIDEO SELECTION",
+                "",
+                "[0] video1.mp4",
+                "[1] video2.mp4",
+                "[A] Process ALL videos",
+                "[Q] Quit",
+            ]
+        }
+        
+        text_lines = instructions.get(instruction_type, [])
+        
+        # Semi-transparent background
+        cv2.rectangle(overlay, (20, 20), (width - 20, 20 + len(text_lines) * 30 + 20), 
+                     (0, 0, 0), -1)
+        frame = cv2.addWeighted(overlay, 0.7, frame, 0.3, 0)
+        
+        # Draw border
+        cv2.rectangle(frame, (20, 20), (width - 20, 20 + len(text_lines) * 30 + 20), 
+                     (0, 255, 255), 2)
+        
+        # Draw text
+        y_pos = 50
+        for line in text_lines:
+            if line.startswith("["):
+                color = (0, 255, 0)  # Green for options
+                font_scale = 0.7
+            elif line == "":
+                y_pos += 10
+                continue
+            else:
+                color = (255, 255, 255)  # White for regular text
+                font_scale = 0.8
+            
+            cv2.putText(frame, line, (40, y_pos), cv2.FONT_HERSHEY_SIMPLEX, 
+                       font_scale, color, 2)
+            y_pos += 30
+        
+        return frame
+
 
 
 def validate_video_file(video_path):
