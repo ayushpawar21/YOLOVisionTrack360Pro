@@ -3,6 +3,26 @@ Utility Module - Helper functions for video I/O, drawing, and processing.
 
 Provides functions for reading/writing videos, drawing bounding boxes,
 adding visual annotations, and other helper operations.
+
+RECENT CHANGES (April 2026):
+- Added FrameAnnotator with 10-color palette for consistent object coloring
+- draw_bounding_box now supports thick borders (4px) with ID and confidence
+- draw_border adds green frame around video edge
+- add_timestamp displays frame count and elapsed time
+- add_info_text for generic overlays
+- VideoReader/VideoWriter handle MP4 codec (mp4v) with frame preservation
+- validate_video_file checks file accessibility before processing
+- get_video_files supports .mp4, .avi, .mov, .mkv, .flv, .wmv, .webm
+
+KEY CLASSES:
+- VideoReader: Safe frame reading with metadata
+- VideoWriter: MP4 output with preserved FPS/resolution
+- FrameAnnotator: Static methods for drawing and annotations
+
+VISUALIZATION CONVENTIONS:
+- Colors: BGR format (OpenCV standard)
+- Thickness: 4px for boxes, 2px for text
+- Text position: (10, 30) is default top-left
 """
 
 import cv2

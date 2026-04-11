@@ -4,14 +4,29 @@ Video Object Tracking Application with YOLOv8
 Main entry point for batch video processing with object tracking.
 Uses YOLOv8 for real-time object detection and built-in tracking.
 
-Usage:
-    python main.py [--model MODEL] [--conf CONF]
+RECENT CHANGES (April 2026):
+- Integrated YOLOv8 (Ultralytics) for accurate object tracking
+- Added BoT-SORT tracking algorithm with persistent ID assignment
+- Thick bounding boxes (4px) for better visibility
+- Color-coded object tracking by unique ID
+- Dual progress bars (video-level and frame-level)
+- Model selection via command line: --model yolov8s.pt
+- Default model uses configuration from tracker.py
 
-Options:
-    --model MODEL: YOLOv8 model size (nano, small, medium, large, xlarge)
-                  Default: nano (fastest)
-    --conf CONF:   Confidence threshold (0.0-1.0)
-                  Default: 0.45
+USAGE EXAMPLES:
+  python main.py                           # Use default model from tracker.py
+  python main.py --model yolov8s.pt        # Override with small model
+  python main.py --conf 0.50               # Higher confidence threshold
+  python main.py --input-dir my_videos --output-dir results
+
+MODELS AVAILABLE:
+  - yolov8n.pt   (nano)   - Fastest, 30-60 FPS
+  - yolov8s.pt   (small)  - Balanced, 20-40 FPS
+  - yolov8m.pt   (medium) - Better accuracy, 15-30 FPS
+  - yolov8l.pt   (large)  - High accuracy, 10-20 FPS
+  - yolov8x.pt   (xlarge) - Best accuracy, 5-15 FPS
+
+NOTE: Model can be changed in tracker.py at top of file (comment/uncomment)
 """
 
 import os

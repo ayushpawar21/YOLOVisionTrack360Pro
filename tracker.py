@@ -3,6 +3,18 @@ Tracker Module - YOLOv8-based object detection and tracking.
 
 This module uses Ultralytics YOLOv8 for real-time object detection
 with built-in tracking capabilities (BoT-SORT algorithm).
+
+RECENT CHANGES (April 2026):
+- Increased BORDER_THICKNESS to 4px for better visibility
+- Added MODEL_NAME configuration at top for easy model switching (comment/uncomment)
+- Simplified configuration with CONFIDENCE_THRESHOLD, TEXT_SCALE, TEXT_THICKNESS
+- Color-coded bounding boxes by track ID for consistent identification
+- YOLOv8 auto-downloads models on first use (~90MB to 1.3GB)
+
+CONFIGURATION HOTSPOTS:
+- Lines 12-18: MODEL_NAME selection (comment/uncomment models)
+- Line 22: BORDER_THICKNESS = 4 (adjust for thicker/thinner boxes)
+- Line 21: CONFIDENCE_THRESHOLD = 0.45 (adjust detection sensitivity)
 """
 
 import cv2
@@ -27,9 +39,9 @@ MODEL_NAME = "yolov8l.pt"  # Large model - ~800MB, high accuracy
 # =============================================================================
 
 CONFIDENCE_THRESHOLD = 0.45  # Detection confidence (0.0-1.0)
-BORDER_THICKNESS = 7         # Thickness of bounding boxes (pixels)
+BORDER_THICKNESS = 2         # Thickness of bounding boxes (pixels)
 TEXT_SCALE = 0.9             # Text size for labels
-TEXT_THICKNESS = 7           # Text thickness
+TEXT_THICKNESS = 2           # Text thickness
 
 # =============================================================================
 
