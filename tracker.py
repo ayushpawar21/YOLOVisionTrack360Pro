@@ -173,7 +173,7 @@ class VideoTracker:
             cv2.rectangle(annotated, (x, y), (x + w, y + h), color, BORDER_THICKNESS)
             
             # Draw label with track ID
-            label = f"ID {track_id} {class_name} {confidence:.2f}"
+            label = f"{class_name}"
             label_size = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, TEXT_SCALE, TEXT_THICKNESS)[0]
             
             # Background for text
