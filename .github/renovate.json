@@ -1,6 +1,6 @@
 {
   "extends": [
-    "config:base"
+    "config:recommended"
   ],
   "timezone": "UTC",
   "assignees": [],
@@ -13,9 +13,11 @@
   "packageRules": [
     {
       "matchDatasources": ["pypi"],
-      "matchPackagePatterns": [".*"],
       "automerge": false,
-      "groupName": "python dependencies"
+      "groupName": "python dependencies",
+      "matchPackageNames": [
+        "/.*/"
+      ]
     },
     {
       "matchPackageNames": ["torch", "torchvision", "ultralytics"],
